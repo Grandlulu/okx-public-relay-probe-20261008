@@ -1,0 +1,24 @@
+{
+  "state": "Prepared configuration; no resources created",
+  "accountPlan": "Developer Sandbox only",
+  "deploymentTarget": "Northflank managed cloud; never BYOC",
+  "regionCandidate": "Review only regions actually available to this Free account at zero cost; Asia is unavailable on its current plan",
+  "accountEvidence": {
+    "observedAt": "2026-10-08T08:16:04Z",
+    "source": "User-provided Northflank Free console screenshot",
+    "asiaRequiresUpgrade": true,
+    "requiredPlan": "Pay-as-you-go",
+    "otherFreeRegionsVerified": false,
+    "upgradeAuthorized": false
+  },
+  "nextPilot": "Render Free/Singapore account eligibility check; general platform region listings do not prove eligibility",
+  "services": 1,
+  "compute": "Select native free compute; do not upgrade, add GPU/database/volume, or add payment method",
+  "port": { "number": 8080, "protocol": "HTTP", "public": true },
+  "healthCheck": { "method": "GET", "path": "/healthz" },
+  "secretEnvironment": ["PROBE_TOKEN"],
+  "host": "Use platform assigned code.run HTTPS address; existing CF ws hostname unchanged",
+  "build": "Dockerfile or standalone source repository/image containing only this public probe",
+  "freeGate": "Account, resource and network/egress conditions must confirm zero-cost trial before creation",
+  "afterCreate": "190 TLS/public-data preflight followed by 600 seconds with direct socket evidence; no trading/login frames"
+}

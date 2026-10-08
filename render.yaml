@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: okx-public-network-probe
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: off
+    envVars:
+      - key: PROBE_TOKEN
+        sync: false

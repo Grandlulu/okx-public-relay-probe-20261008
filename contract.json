@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Independent public BTC-USDT network experiment; no AiQuant database or private trading",
+  "token": { "header": "X-Probe-Token", "environment": "PROBE_TOKEN", "minimumUtf8Bytes": 24 },
+  "routes": {
+    "/healthz": { "method": "GET", "authentication": false, "upstream": false },
+    "/okx/public": { "method": "GET", "upgrade": "websocket", "upstream": "wss://ws.okx.com/ws/v5/public", "channels": ["bbo-tbt"] },
+    "/okx/business": { "method": "GET", "upgrade": "websocket", "upstream": "wss://ws.okx.com/ws/v5/business", "channels": ["candle5m", "candle15m"] },
+    "/okx/time": { "method": "GET", "upstream": "https://openapi.okx.com/api/v5/public/time", "cache": "no-store" }
+  },
+  "clientFrames": {
+    "textPing": "ping is forwarded to OKX; the relay never synthesizes the text pong",
+    "operations": ["subscribe", "unsubscribe"],
+    "instrument": "BTC-USDT",
+    "maximumArgs": 2,
+    "forbidden": ["login", "order", "private channels", "binary frames", "unknown JSON fields", "arbitrary origin/query parameters"]
+  },
+  "limits": { "clients": 8, "clientFrameBytes": 4096, "upstreamFrameBytes": 65536, "bufferedBytes": 1048576, "connectTimeoutMs": 10000 },
+  "outgoingHeaders": "Never forward probe credentials, cookies, Authorization or OK-ACCESS-* to OKX",
+  "network": "Normal upstream Host/SNI/TLS, no proxy or insecure certificate option",
+  "lifecycle": "Accept downstream WS only after upstream opens; disconnect tears down both sides; graceful shutdown; no outbound retry of side effects",
+  "logging": "Counts/status/codes only; no headers, frame bodies, tokens, login data or account messages",
+  "deployment": "Native free service only; verify zero-cost region and egress; platform hostname first; existing ws.aiquant.org.cn and production unchanged"
+}

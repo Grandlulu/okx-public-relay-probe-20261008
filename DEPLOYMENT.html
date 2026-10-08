@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>免费欧易公开中转试验部署说明</title>
+<style>:root{color-scheme:dark}body{margin:0;background:#10141b;color:#e6ebf3;font:16px/1.8 system-ui,"Microsoft YaHei",sans-serif}main{max-width:950px;margin:auto;padding:28px 22px 60px}a{color:#a1c3ff}code{overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#172637;padding:16px}li{margin:10px 0}.note{padding:18px;background:#172637;border-radius:10px}</style>
+<main><h1>Northflank / Render 免费公开行情试验</h1>
+<p>两者都是托管应用平台：平台负责服务器、HTTPS、构建及进程运行，用户部署自己的小程序。无需个人VPS或159的Clash常驻；它们还没有本次190速度和稳定性数据。</p>
+<p class="note"><strong>准备完成、尚未部署：</strong>独立程序与两平台配置已准备，16项本地守护/协议测试通过。真实公开上游预检已通过，但使用现有159开发代理，仅是协议验证；没有把它当云端/190直连性能。本机Docker引擎未运行，因此Dockerfile没有本地镜像构建验收，平台构建仍须核。</p>
+<h2>先完成本人平台连接</h2>
+<ol><li>2026-10-08用户的Northflank <strong>Free</strong>控制台截图已确认亚洲地区均需Pay-as-you-go，当前不升级。下一免费候选先手动打开 <a href="https://dashboard.render.com/">Render官网控制台</a>；本账户的Free＋Singapore创建资格仍需核验，不选付费实例、不绑卡。若出现付费要求，停在该步骤。</li>
+<li>按 <a href="https://render.com/docs/cli">Render官方CLI/API说明</a> 建立本人部署授权连接。API令牌仅保存在本机或官方CLI配置，不发聊天，不放进本程序或容器。只授权本次独立试验所需范围。</li>
+<li>查看免费账户实际地区、计算和出站条件，确认0元后才创建1个试验服务。Northflank免费非亚洲地区尚未测，仍可保留为备选；平台一般区域表不能证明免费账户资格。</li>
+<li>代码来源只用这个独立程序包的仓库/镜像。尚未发布代码仓库或镜像；确认账号连接后选择可用的构建来源，不授予整个AiQuant仓库权限。</li></ol>
+<h2>配置与接口</h2>
+<p>协议唯一说明在 <a href="contract.json">contract.json</a>。需要独立随机 <code>PROBE_TOKEN</code>（至少24字节），它不是欧易API钥匙。部署时通过平台secret环境变量设置；令牌没有包含在程序包里。</p>
+<ul><li><code>GET /healthz</code>：进程健康；不代表欧易端到端已通。</li><li><code>/okx/public</code>：受保护的公开BTC-USDT盘口WSS。</li><li><code>/okx/business</code>：受保护的candle5m/candle15m WSS。</li><li><code>GET /okx/time</code>：受保护的欧易公开时间接口，禁止缓存。</li></ul>
+<p>仅转发合法公开订阅/取消订阅和文本ping；拒绝登录、订单、其他标的/频道、二进制、未知字段与任意上游。文本pong来自欧易；客户端WebSocket控制帧pong不是本试验的应用RTT。</p>
+<h2>Northflank</h2>
+<p><a href="northflank-pilot.json">Northflank核验配置</a>：1服务、HTTP公开8080、健康<code>/healthz</code>，使用平台分配的HTTPS域名。用户Free账户的香港/东京/新加坡/印度/澳洲已显示需升级，免费亚洲候选停止；若后续评估其他地区，必须先核原生免费计算和出站0元条件。尚无该平台部署或190性能数据。</p>
+<h2>Render</h2>
+<p><a href="render.yaml">Render配置</a> 固定 <code>plan: free</code>、<code>region: singapore</code>、自动部署关闭；这是待核验配置，尚未证明本账户能以0元创建。免费服务存在休眠/重启与额度边界，未承诺生产SLA。Render需要本人授权连接和独立代码来源。</p>
+<h2>本地与平台构建</h2>
+<pre>npm ci --ignore-scripts --no-audit --no-fund
+npm test
+# 启动前在本机进程环境或平台secret中设置独立PROBE_TOKEN
+npm start</pre>
+<p>Dockerfile使用Node24 LTS，独立依赖固定ws8.22.0及lockfile。源码在本机Node22完成验证；不要把Dockerfile准备完成说成镜像已构建或服务已上线。</p>
+<h2>部署后的190测量</h2>
+<p>先核平台默认URL的正常Host/SNI/TLS、101、真实盘口/两K线/上游pong，再做600秒同期对照CF基线，记P50/P95/P99、6秒异常与关闭原因、推送间隔/缺口/恢复和字节用量。仅公开行情，不登录交易账户、不下单；现有ws.aiquant.org.cn、根域/www、NS及190默认网络保持原状。</p>
+<p>当前卡尚未完成平台试验；缺的是本人账号认证/授权，而不是重复批准免费测试。执行工具自动审批拒绝了浏览器打开操作，返回blocked by policy且未给详细原因，因此需手动点击官方入口。</p>
+</main></html>
